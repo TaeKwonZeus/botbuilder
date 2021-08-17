@@ -1,4 +1,5 @@
-package botbuilder
+// Package command adds command handlers functionality along with a simple builder for ease of creation.
+package command
 
 import "github.com/bwmarrin/discordgo"
 
@@ -11,5 +12,4 @@ type commandHandler struct {
 }
 
 func (ch *commandHandler) OnMessageCreate(session *discordgo.Session, event *discordgo.MessageCreate) {
-
 }

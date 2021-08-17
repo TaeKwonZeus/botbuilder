@@ -1,4 +1,4 @@
-package botbuilder
+package command
 
 import "github.com/bwmarrin/discordgo"
 
