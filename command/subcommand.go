@@ -2,14 +2,19 @@ package command
 
 import "github.com/bwmarrin/discordgo"
 
+// Subcommand represents a Discord subcommand.
 type Subcommand struct {
 	Name           string
 	Description    string
 	Aliases        []string
 	ExecuteCommand bool
-	Execute        func(*discordgo.MessageCreate, []string)
+	Execute        func(*discordgo.Session, *discordgo.MessageCreate, []string)
 }
 
-func SimpleSubcommand(name string, execute func(*discordgo.MessageCreate, []string)) Subcommand {
-	return Subcommand{}
+// SimpleSubcommand creates a Subcommand with the name and the execute function.
+func SimpleSubcommand(name string, execute func(*discordgo.Session, *discordgo.MessageCreate, []string)) Subcommand {
+	return Subcommand{
+		Name:    name,
+		Execute: execute,
+	}
 }

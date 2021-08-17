@@ -17,15 +17,29 @@ package main
 import (
 	"log"
 
+	"github.com/bwmarrin/discordgo"
 	"github.com/taekwonzeus/botbuilder"
+	"github.com/taekwonzeus/botbuilder/command"
 )
 
 func main() {
-	dg, err := botbuilder.NewBotBuilder("token").Build()
+	// Create a command handler
+	handler := command.NewCommandHandler(command.SimpleCommand("ping", func(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+		s.ChannelMessageSend(m.ChannelID, "Pong!")
+	}))
+
+	// Create a Discord bot
+	dg, err := botbuilder.NewBotBuilder("token").AddCommandHandler(handler).Build()
 	if err != nil {
-		log.Fatal("Error when creating bot:", err)
+		log.Fatal("Error when creating bot: ", err)
 	}
 
-	dg.Open()
+	// Open the connection
+	err = dg.Open()
+	if err != nil {
+		log.Fatal("Error opening connection: ", err)
+	}
+
+	// Close the connection with dg.Close()
 }
 ```
