@@ -1,23 +1,25 @@
 package command
 
-import "github.com/bwmarrin/discordgo"
+func NewCommandHandlerBuilder() CommandHandlerBuilder {
+	return &commandHandlerBuilder{}
+}
 
 type CommandHandlerBuilder interface {
-	AddCommand(func(*discordgo.MessageCreate, []string)) CommandHandlerBuilder
-	AddCommands(...func(*discordgo.MessageCreate, []string)) CommandHandlerBuilder
+	AddCommand(Command) CommandHandlerBuilder
+	AddCommands(...Command) CommandHandlerBuilder
 	Build() CommandHandler
 }
 
 type commandHandlerBuilder struct {
-	commands []func(*discordgo.MessageCreate, []string)
+	commands []Command
 }
 
-func (cb *commandHandlerBuilder) AddCommand(command func(*discordgo.MessageCreate, []string)) CommandHandlerBuilder {
+func (cb *commandHandlerBuilder) AddCommand(command Command) CommandHandlerBuilder {
 	cb.commands = append(cb.commands, command)
 	return cb
 }
 
-func (cb *commandHandlerBuilder) AddCommands(commands ...func(*discordgo.MessageCreate, []string)) CommandHandlerBuilder {
+func (cb *commandHandlerBuilder) AddCommands(commands ...Command) CommandHandlerBuilder {
 	cb.commands = append(cb.commands, commands...)
 	return cb
 }

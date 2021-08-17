@@ -8,7 +8,7 @@ type CommandHandler interface {
 }
 
 type commandHandler struct {
-	commands []func(*discordgo.MessageCreate, []string)
+	commands []Command
 }
 
 func (ch *commandHandler) OnMessageCreate(session *discordgo.Session, event *discordgo.MessageCreate) {
