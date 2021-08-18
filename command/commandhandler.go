@@ -9,6 +9,7 @@ func NewCommandHandler(commands ...Command) CommandHandler {
 }
 
 // CommandHandler represents a Discord command handler.
+// You can create your own struct based on CommandHandler and set it as the command handler.
 type CommandHandler interface {
 	OnMessageCreate(*discordgo.Session, *discordgo.MessageCreate)
 }
