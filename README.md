@@ -29,7 +29,7 @@ func main() {
 	}))
 
 	// Create a Discord bot
-	dg, err := botbuilder.NewBotBuilder("token").AddCommandHandler(handler).Build()
+	dg, err := botbuilder.NewBotBuilder("token").SetCommandHandler(handler).Build()
 	if err != nil {
 		log.Fatal("Error when creating bot: ", err)
 	}

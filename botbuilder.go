@@ -17,7 +17,8 @@ func NewBotBuilder(token string) BotBuilder {
 type BotBuilder interface {
 	AddEventHandler(func(*discordgo.Session, interface{})) BotBuilder
 	AddEventHandlers(...func(*discordgo.Session, interface{})) BotBuilder
-	AddCommandHandler(command.CommandHandler) BotBuilder
+	SetCommandHandler(command.CommandHandler) BotBuilder
+	SetIntents(discordgo.Intent) BotBuilder
 	Build() (*discordgo.Session, error)
 }
 
@@ -25,6 +26,7 @@ type botBuilder struct {
 	token          string
 	eventHandlers  []func(*discordgo.Session, interface{})
 	commandHandler command.CommandHandler
+	intents        discordgo.Intent
 }
 
 // AddEventHandler adds a singular Discord event handler to the bot.
@@ -39,9 +41,15 @@ func (bb *botBuilder) AddEventHandlers(eventHandlers ...func(*discordgo.Session,
 	return bb
 }
 
-// AddCommandHandler adds a CommandHandler to the bot.
-func (bb *botBuilder) AddCommandHandler(commandHandler command.CommandHandler) BotBuilder {
+// SetCommandHandler sets the bot's command handler.
+// Additional SetCommander calls will rewrite the CommandHandler.
+func (bb *botBuilder) SetCommandHandler(commandHandler command.CommandHandler) BotBuilder {
 	bb.commandHandler = commandHandler
+	return bb
+}
+
+func (bb *botBuilder) SetIntents(intents discordgo.Intent) BotBuilder {
+	bb.intents = intents
 	return bb
 }
 
@@ -59,6 +67,12 @@ func (bb *botBuilder) Build() (*discordgo.Session, error) {
 	if bb.commandHandler != nil {
 		dg.AddHandler(bb.commandHandler.OnMessageCreate)
 	}
+
+	if bb.intents == 0 {
+		bb.intents = discordgo.IntentsAllWithoutPrivileged
+	}
+
+	dg.Identify.Intents = bb.intents
 
 	return dg, nil
 }
