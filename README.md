@@ -16,6 +16,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/taekwonzeus/botbuilder"
@@ -47,7 +48,11 @@ func main() {
 	handler := command.NewCommandHandler(ping, test)
 
 	// Create a Discord bot
-	dg, err := botbuilder.NewBotBuilder("token").SetCommandHandler(handler).Build()
+	dg, err := botbuilder.
+		NewBotBuilder(os.Getenv("DISCORD_TOKEN")).
+		SetCommandHandler(handler).
+		Build()
+
 	if err != nil {
 		log.Fatal("Error when creating bot: ", err)
 	}
