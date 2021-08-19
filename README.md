@@ -22,11 +22,29 @@ import (
 	"github.com/taekwonzeus/botbuilder/command"
 )
 
+var (
+	// Create a fully tuned command:
+	ping = command.Command{
+		Name:        "ping",
+		Description: "Ping!",
+		Aliases:     []string{"p"},
+		Execute: func(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+			s.ChannelMessageSend(m.ChannelID, "Pong!")
+		},
+	}
+
+	// Or a simple one:
+	test = command.SimpleCommand(
+		"test",
+		func(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+			s.ChannelMessageSend(m.ChannelID, "test response")
+		},
+	)
+)
+
 func main() {
 	// Create a command handler
-	handler := command.NewCommandHandler(command.SimpleCommand("ping", func(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
-	}))
+	handler := command.NewCommandHandler(ping, test)
 
 	// Create a Discord bot
 	dg, err := botbuilder.NewBotBuilder("token").SetCommandHandler(handler).Build()

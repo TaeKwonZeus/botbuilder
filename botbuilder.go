@@ -9,8 +9,8 @@ import (
 
 // NewBotBuilder creates a new BotBuilder object and writes the token specified into the builder.
 // You don't have to add "Bot " to the token like in discordgo as the builder will do it for you.
-func NewBotBuilder(token string) BotBuilder {
-	return BotBuilder{token: token}
+func NewBotBuilder(token string) *BotBuilder {
+	return &BotBuilder{token: token}
 }
 
 // BotBuilder represents a Discord bot builder.
@@ -40,6 +40,8 @@ func (bb *BotBuilder) SetCommandHandler(commandHandler command.CommandHandler) *
 	return bb
 }
 
+// SetIntents sets the bot's intents.
+// If not called, the bot's intents will be set to IntentsGuildMessages.
 func (bb *BotBuilder) SetIntents(intents discordgo.Intent) *BotBuilder {
 	bb.intents = intents
 	return bb
@@ -61,7 +63,7 @@ func (bb *BotBuilder) Build() (*discordgo.Session, error) {
 	}
 
 	if bb.intents == 0 {
-		bb.intents = discordgo.IntentsAllWithoutPrivileged
+		bb.intents = discordgo.IntentsGuildMessages
 	}
 
 	dg.Identify.Intents = bb.intents
