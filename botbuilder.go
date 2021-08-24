@@ -1,27 +1,27 @@
 // Package botbuilder allows for simple Discord bot initialization utilizing the builder pattern.
-// The Discord API functionality is provided by a well-known package discordgo.
+// The Discord API functionality is provided by a well-known package discorsessiono.
 package botbuilder
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/taekwonzeus/botbuilder/command"
 )
 
 // NewBotBuilder creates a new BotBuilder object and writes the token specified into the builder.
-// You don't have to add "Bot " to the token like in discordgo as the builder will do it for you.
+// You don't have to add "Bot " to the token like in discorsessiono as the builder will do it for you.
 func NewBotBuilder(token string) *BotBuilder {
 	return &BotBuilder{token: token}
 }
 
 // BotBuilder represents a Discord bot builder.
 type BotBuilder struct {
-	token          string
-	eventHandlers  []func(*discordgo.Session, interface{})
-	commandHandler command.CommandHandler
-	intents        discordgo.Intent
+	token            string
+	eventHandlers    []func(*discordgo.Session, interface{})
+	commandHandler   commandHandler
+	intents          discordgo.Intent
+	collectorHandler collectorHandler
 }
 
-// AddEventHandler adds a singular Discord event handler to the bot.
+// AddEventHandler adds a single Discord event handler to the bot.
 func (bb *BotBuilder) AddEventHandler(eventHandler func(*discordgo.Session, interface{})) *BotBuilder {
 	bb.eventHandlers = append(bb.eventHandlers, eventHandler)
 	return bb
@@ -33,10 +33,15 @@ func (bb *BotBuilder) AddEventHandlers(eventHandlers ...func(*discordgo.Session,
 	return bb
 }
 
-// SetCommandHandler sets the bot's command handler.
-// Additional SetCommander calls will rewrite the CommandHandler.
-func (bb *BotBuilder) SetCommandHandler(commandHandler command.CommandHandler) *BotBuilder {
-	bb.commandHandler = commandHandler
+// AddCommand adds a single command to the bot.
+func (bb *BotBuilder) AddCommand(command *Command) *BotBuilder {
+	bb.commandHandler.commands = append(bb.commandHandler.commands, command)
+	return bb
+}
+
+// AddCommands adds multiple commands to the bot.
+func (bb *BotBuilder) AddCommands(commands ...*Command) *BotBuilder {
+	bb.commandHandler.commands = append(bb.commandHandler.commands, commands...)
 	return bb
 }
 
@@ -47,26 +52,34 @@ func (bb *BotBuilder) SetIntents(intents discordgo.Intent) *BotBuilder {
 	return bb
 }
 
+// SetMessageBuffer sets a message collector for the bot.
+// Every time a MessageCreate event is invoked the event data is passed into c.
+func (bb *BotBuilder) SetMessageCollector(collector chan *discordgo.MessageCreate) *BotBuilder {
+	bb.collectorHandler.messageCollector = collector
+	return bb
+}
+
 // Build creates a Discord bot, adding the command handler and event handlers specified.
 func (bb *BotBuilder) Build() (*discordgo.Session, error) {
-	dg, err := discordgo.New("Bot " + bb.token)
+	session, err := discordgo.New("Bot " + bb.token)
 	if err != nil {
 		return nil, err
 	}
 
 	for _, i := range bb.eventHandlers {
-		dg.AddHandler(i)
+		if i != nil {
+			session.AddHandler(i)
+		}
 	}
 
-	if bb.commandHandler != nil {
-		dg.AddHandler(bb.commandHandler.OnMessageCreate)
-	}
+	bb.collectorHandler.build(session)
+	bb.commandHandler.build(session)
 
 	if bb.intents == 0 {
 		bb.intents = discordgo.IntentsGuildMessages
 	}
 
-	dg.Identify.Intents = bb.intents
+	session.Identify.Intents = bb.intents
 
-	return dg, nil
+	return session, nil
 }

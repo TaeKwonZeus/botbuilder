@@ -1,4 +1,4 @@
-package command
+package botbuilder
 
 import "github.com/bwmarrin/discordgo"
 
@@ -12,8 +12,8 @@ type Command struct {
 }
 
 // SimpleCommand creates a Command with the name and the execute function.
-func SimpleCommand(name string, execute func(*discordgo.Session, *discordgo.MessageCreate, []string)) Command {
-	return Command{
+func SimpleCommand(name string, execute func(*discordgo.Session, *discordgo.MessageCreate, []string)) *Command {
+	return &Command{
 		Name:    name,
 		Execute: execute,
 	}
