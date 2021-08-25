@@ -59,6 +59,13 @@ func (bb *BotBuilder) SetMessageCollector(collector chan *discordgo.MessageCreat
 	return bb
 }
 
+// SetPrefix sets a prefix for the bot.
+// By default, there is no prefix.
+func (bb *BotBuilder) SetPrefix(prefix string) *BotBuilder {
+	bb.commandHandler.prefix = prefix
+	return bb
+}
+
 // Build creates a Discord bot, adding the command handler and event handlers specified.
 func (bb *BotBuilder) Build() (*discordgo.Session, error) {
 	session, err := discordgo.New("Bot " + bb.token)
