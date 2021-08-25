@@ -49,7 +49,7 @@ func (ch commandHandler) onMessageCreate(session *discordgo.Session, messageCrea
 		return
 	}
 
-	// TODO finish the command handler
+	go command.Execute(session, messageCreate, args[1:])
 }
 
 func (ch commandHandler) getCommand(name string) (*Command, error) {
@@ -65,5 +65,5 @@ func (ch commandHandler) getCommand(name string) (*Command, error) {
 		}
 	}
 
-	return nil, errors.New("Command not found!")
+	return nil, errors.New("Command not found")
 }
