@@ -52,7 +52,6 @@ func main() {
 		AddCommands(ping, test).
 		SetMessageCollector(messageCollector).
 		Build()
-
 	if err != nil {
 		log.Fatal("Error when creating bot: ", err)
 	}
