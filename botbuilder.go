@@ -54,7 +54,7 @@ func (bb *BotBuilder) SetIntents(intents discordgo.Intent) *BotBuilder {
 
 // SetMessageBuffer sets a message collector for the bot.
 // Every time a MessageCreate event is invoked the event data is passed into c.
-func (bb *BotBuilder) SetMessageCollector(collector chan *discordgo.MessageCreate) *BotBuilder {
+func (bb *BotBuilder) SetMessageCollector(collector []*discordgo.MessageCreate) *BotBuilder {
 	bb.collectorHandler.messageCollector = collector
 	return bb
 }
