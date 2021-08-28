@@ -7,6 +7,7 @@
 ![license](https://img.shields.io/github/license/TaeKwonZeus/botbuilder)
 ![Go](https://img.shields.io/github/go-mod/go-version/TaeKwonZeus/botbuilder)
 [![Go Reference](https://pkg.go.dev/badge/github.com/taekwonzeus/botbuilder.svg)](https://pkg.go.dev/github.com/taekwonzeus/botbuilder)
+[![Go Report Card](https://goreportcard.com/badge/github.com/TaeKwonZeus/botbuilder)](https://goreportcard.com/report/github.com/TaeKwonZeus/botbuilder)
 
 An extension for [discordgo](https://github.com/bwmarrin/discordgo) to create a Discord bot quickly using the Builder pattern.
 
