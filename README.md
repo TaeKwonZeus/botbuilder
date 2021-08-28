@@ -41,9 +41,8 @@ var (
 		},
 	)
 
-	// You can also set up a channel where all the messages go.
-	// Working/freeing it is up to you.
-	messageCollector = make(chan *discordgo.MessageCreate)
+	// You can also set up a slice where all the messages go.
+	messageCollector []*discordgo.MessageCreate
 )
 
 func main() {
