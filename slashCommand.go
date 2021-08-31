@@ -7,4 +7,5 @@ type SlashCommandFunction func(session *discordgo.Session, event *discordgo.Inte
 type SlashCommand struct {
 	ApplicationCommand *discordgo.ApplicationCommand
 	Execute            SlashCommandFunction
+	Guild              string
 }

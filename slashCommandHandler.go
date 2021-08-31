@@ -7,12 +7,13 @@ import (
 type slashCommandHandler struct {
 	slashCommands        []*discordgo.ApplicationCommand
 	slashCommandHandlers map[string]SlashCommandFunction
+	slashCommandGuilds   map[string]string
 }
 
 func (sch slashCommandHandler) build(session *discordgo.Session) {
 	if sch.slashCommands != nil {
 		for _, i := range sch.slashCommands {
-			session.ApplicationCommandCreate(session.State.User.ID, "", i)
+			session.ApplicationCommandCreate(session.State.User.ID, sch.slashCommandGuilds[i.Name], i)
 		}
 		session.AddHandler(sch.onInteractionCreate)
 	}

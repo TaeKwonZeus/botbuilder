@@ -50,6 +50,7 @@ func (bb *BotBuilder) AddCommands(commands ...*Command) *BotBuilder {
 func (bb *BotBuilder) AddSlashCommand(slashCommand *SlashCommand) *BotBuilder {
 	bb.slashCommandHandler.slashCommands = append(bb.slashCommandHandler.slashCommands, slashCommand.ApplicationCommand)
 	bb.slashCommandHandler.slashCommandHandlers[slashCommand.ApplicationCommand.Name] = slashCommand.Execute
+	bb.slashCommandHandler.slashCommandGuilds[slashCommand.ApplicationCommand.Name] = slashCommand.Guild
 	return bb
 }
 
