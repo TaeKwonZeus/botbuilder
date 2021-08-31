@@ -15,7 +15,7 @@ func NewBotBuilder(token string) *BotBuilder {
 // BotBuilder represents a Discord bot builder.
 type BotBuilder struct {
 	token            string
-	eventHandlers    []func(*discordgo.Session, interface{})
+	eventHandlers    []func(session *discordgo.Session, event interface{})
 	commandHandler   commandHandler
 	intents          discordgo.Intent
 	collectorHandler collectorHandler
