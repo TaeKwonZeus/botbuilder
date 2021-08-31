@@ -98,6 +98,7 @@ func (bb *BotBuilder) Build() (*discordgo.Session, error) {
 
 	bb.collectorHandler.build(session)
 	bb.commandHandler.build(session)
+	bb.slashCommandHandler.build(session)
 
 	if bb.intents == 0 {
 		bb.intents = discordgo.IntentsGuildMessages
