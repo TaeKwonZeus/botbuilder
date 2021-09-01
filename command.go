@@ -10,11 +10,3 @@ type Command struct {
 	Subcommands []Subcommand
 	Execute     func(*discordgo.Session, *discordgo.MessageCreate, []string)
 }
-
-// SimpleCommand creates a Command with the name and the execute function.
-func SimpleCommand(name string, execute func(*discordgo.Session, *discordgo.MessageCreate, []string)) *Command {
-	return &Command{
-		Name:    name,
-		Execute: execute,
-	}
-}
