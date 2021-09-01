@@ -9,7 +9,7 @@ import (
 )
 
 type commandHandler struct {
-	commands []*Command
+	commands []Command
 	prefix   string
 }
 
@@ -52,7 +52,7 @@ func (ch commandHandler) onMessageCreate(session *discordgo.Session, messageCrea
 	go command.Execute(session, messageCreate, args[1:])
 }
 
-func (ch commandHandler) getCommand(name string) (*Command, error) {
+func (ch commandHandler) getCommand(name string) (Command, error) {
 	for _, command := range ch.commands {
 		if command.Name == name {
 			return command, nil
@@ -65,5 +65,5 @@ func (ch commandHandler) getCommand(name string) (*Command, error) {
 		}
 	}
 
-	return nil, errors.New("Command not found")
+	return Command{}, errors.New("Command not found")
 }

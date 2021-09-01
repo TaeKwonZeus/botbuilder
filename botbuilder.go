@@ -34,13 +34,13 @@ func (bb *BotBuilder) AddEventHandlers(eventHandlers ...func(*discordgo.Session,
 }
 
 // AddCommand adds a single command to the bot.
-func (bb *BotBuilder) AddCommand(command *Command) *BotBuilder {
+func (bb *BotBuilder) AddCommand(command Command) *BotBuilder {
 	bb.commandHandler.commands = append(bb.commandHandler.commands, command)
 	return bb
 }
 
 // AddCommands adds multiple commands to the bot.
-func (bb *BotBuilder) AddCommands(commands ...*Command) *BotBuilder {
+func (bb *BotBuilder) AddCommands(commands ...Command) *BotBuilder {
 	bb.commandHandler.commands = append(bb.commandHandler.commands, commands...)
 	return bb
 }
