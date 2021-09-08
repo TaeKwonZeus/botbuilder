@@ -26,6 +26,7 @@ var (
 func main() {
 	// Create a Discord bot
 	dg, err := botbuilder.NewBotBuilder(os.Getenv("DISCORD_TOKEN")).
+		SetPrefix("!").
 		AddCommands(ping).
 		SetMessageCollector(messageCollector).
 		Build()
