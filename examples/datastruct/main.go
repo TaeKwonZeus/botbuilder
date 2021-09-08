@@ -14,7 +14,7 @@ func main() {
 		Name:        "ping",
 		Description: "Ping!",
 		Aliases:     []string{"p"},
-		Execute: func(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+		Execute:     func(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 			s.ChannelMessageSend(m.ChannelID, "Pong!")
 		},
 	}
