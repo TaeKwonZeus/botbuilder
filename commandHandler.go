@@ -19,12 +19,12 @@ func (ch commandHandler) build(session *discordgo.Session) {
 	}
 }
 
-func (ch commandHandler) onMessageCreate(session *discordgo.Session, messageCreate *discordgo.MessageCreate) {
-	if messageCreate.Author.Bot {
+func (ch commandHandler) onMessageCreate(session *discordgo.Session, event *discordgo.MessageCreate) {
+	if event.Author.Bot {
 		return
 	}
 
-	content := messageCreate.Content
+	content := event.Content
 
 	if len(content) <= len(ch.prefix) {
 		return
@@ -49,7 +49,7 @@ func (ch commandHandler) onMessageCreate(session *discordgo.Session, messageCrea
 		return
 	}
 
-	go command.Execute(session, messageCreate, args[1:])
+	go command.Execute(session, event, args[1:])
 }
 
 func (ch commandHandler) getCommand(name string) (Command, error) {

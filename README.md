@@ -41,7 +41,7 @@ var (
 func main() {
 	// Create a Discord bot
 	dg, err := botbuilder.NewBotBuilder(os.Getenv("DISCORD_TOKEN")).
-		AddCommands(ping).
+		AddCommand(ping).
 		SetMessageCollector(messageCollector).
 		Build()
 	if err != nil {

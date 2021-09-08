@@ -14,11 +14,12 @@ func NewBotBuilder(token string) *BotBuilder {
 
 // BotBuilder represents a Discord bot builder.
 type BotBuilder struct {
-	token            string
-	eventHandlers    []func(*discordgo.Session, interface{})
-	commandHandler   commandHandler
-	intents          discordgo.Intent
-	collectorHandler collectorHandler
+	token               string
+	eventHandlers       []func(session *discordgo.Session, event interface{})
+	commandHandler      commandHandler
+	slashCommandHandler slashCommandHandler
+	intents             discordgo.Intent
+	collectorHandler    collectorHandler
 }
 
 // AddEventHandler adds a single Discord event handler to the bot.
@@ -42,6 +43,23 @@ func (bb *BotBuilder) AddCommand(command Command) *BotBuilder {
 // AddCommands adds multiple commands to the bot.
 func (bb *BotBuilder) AddCommands(commands ...Command) *BotBuilder {
 	bb.commandHandler.commands = append(bb.commandHandler.commands, commands...)
+	return bb
+}
+
+// AddSlashCommand adds a single slash command to the bot.
+func (bb *BotBuilder) AddSlashCommand(slashCommand *SlashCommand) *BotBuilder {
+	bb.slashCommandHandler.slashCommands = append(bb.slashCommandHandler.slashCommands, slashCommand.ApplicationCommand)
+	bb.slashCommandHandler.slashCommandHandlers[slashCommand.ApplicationCommand.Name] = slashCommand.Execute
+	bb.slashCommandHandler.slashCommandGuilds[slashCommand.ApplicationCommand.Name] = slashCommand.Guild
+	return bb
+}
+
+// AddSlashCommands adds multiple slash commands to the bot.
+func (bb *BotBuilder) AddSlashCommands(slashCommands ...*SlashCommand) *BotBuilder {
+	for _, i := range slashCommands {
+		bb.AddSlashCommand(i)
+	}
+
 	return bb
 }
 
@@ -81,6 +99,7 @@ func (bb *BotBuilder) Build() (*discordgo.Session, error) {
 
 	bb.collectorHandler.build(session)
 	bb.commandHandler.build(session)
+	bb.slashCommandHandler.build(session)
 
 	if bb.intents == 0 {
 		bb.intents = discordgo.IntentsGuildMessages
