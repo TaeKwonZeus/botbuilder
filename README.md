@@ -11,4 +11,4 @@
 An extension for [discordgo](https://github.com/bwmarrin/discordgo) to create a Discord bot quickly using the Builder pattern.
 
 ## Examples:
-https://github.com/TaeKwonZeus/botbuilder/tree/master/examples
+![Examples](https://github.com/TaeKwonZeus/botbuilder/tree/master/examples)
