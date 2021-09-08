@@ -13,6 +13,7 @@ type BotData struct {
 	MessageCollector []*discordgo.MessageCreate
 }
 
+// Builds the Discord session.
 func (b BotData) Build() (*discordgo.Session, error) {
 	session, err := discordgo.New("Bot " + b.Token)
 	if err != nil {
